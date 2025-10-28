@@ -135,7 +135,34 @@
             /* Add some depth/box-shadow to the text itself for better visibility */
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
             position: relative; 
+            overflow: hidden; /* <-- ADDED to contain the video */
         }
+        
+        /* --- NEW: Video Background Styles --- */
+        #hero-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0; /* Bottom layer */
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(18, 18, 18, 0.6); /* Dark overlay (60% opacity) */
+            z-index: 1; /* Middle layer (above video, below text) */
+        }
+        /* --- End Video Styles --- */
+
 
         .hacker-name {
             font-size: 4.5em;
@@ -219,8 +246,19 @@
         </nav>
 
         <!-- Main Hero Section --><header class="hero-section">
-            <!-- Used Tailwind classes for max-width, center-aligning, and stacking content -->
-            <div class="max-w-4xl mx-auto flex flex-col items-center">
+        
+            <!-- NEW: Video Background -->
+            <video id="hero-video-bg" autoplay loop muted playsinline>
+                <!-- This path is from your code. Make sure 'bg_video.mp4' is in the same folder as this index.html file -->
+                <source src="bg_video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            
+            <!-- NEW: Dark Overlay -->
+            <div class="video-overlay"></div>
+
+            <!-- Content: Added position:relative and z-index:2 to lift it above the video -->
+            <div class="max-w-4xl mx-auto flex flex-col items-center" style="position: relative; z-index: 2;">
                 <!-- H1 content changed and is now controlled by JS for color animation --><h1 class="hacker-name">oxsh0gunX</h1>
                 
                 <!-- Evernight Dance Tagline REMOVED -->
@@ -233,16 +271,7 @@
                     Cyber Security Researcher | MCA Student
                 </p>
 
-<!-- <div class="w-full max-w-2xl mt-8 rounded-lg overflow-hidden border-2 border-cyan-500 shadow-lg" style="box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);"> -->
-    <video class="w-full h-full object-cover" 
-           src="bg_video.mp4" 
-           autoplay 
-           loop 
-           muted 
-           playsinline>
-        Your browser does not support the video tag.
-    </video>
-<!-- </div> -->
+                <!-- Video tag was MOVED from here to be the background -->
             </div>
             
         </header>
@@ -369,3 +398,5 @@
     </script>
 </body>
 </html>
+
+
