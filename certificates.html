@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certifications | oxsh0gunX</title>
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Hacker/Monospace Font --><link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght+400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Define Custom Colors & Font Variables (Consistent across all pages) */
+        :root {
+            --color-bg: #121212; 
+            --color-primary: #00FFFF; /* Electric Blue/Cyan */
+            --color-text: #E0E0E0;
+            --color-dim: #909090;
+            /* Added Colors for New Certificates */
+            --color-thm: #FF5733; /* Orange-Red */
+            --color-ld: #33FF57; /* Bright Green */
+            --color-part: #5733FF; /* Purple */
+        }
+
+        /* Global Styles & Font */
+        body {
+            background-color: var(--color-bg); 
+            color: var(--color-text);
+            font-family: 'Space Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Utility Classes for Glow */
+        .text-neon { color: var(--color-primary); }
+        .shadow-neon-sm { box-shadow: 0 0 5px rgba(0, 255, 255, 0.4); }
+        .border-neon { border-color: var(--color-primary); }
+        
+        /* --- BACKGROUND VIDEO STYLES (Infrastructure from skills.html) --- */
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; 
+            overflow: hidden;
+        }
+        #video-background video {
+            min-width: 100%; 
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: brightness(0.5); 
+        }
+        
+        /* Dark Overlay (Ensures text contrast is high) */
+        #video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+            z-index: 2; 
+            pointer-events: none;
+        }
+
+        /* --- Title Animation Keyframes (PULSE/GLOW) --- */
+        @keyframes pulse-glow {
+            0% { opacity: 0.9; text-shadow: 0 0 5px var(--color-primary), 0 0 5px rgba(0, 0, 0, 0.9); }
+            50% { opacity: 1; text-shadow: 0 0 15px var(--color-primary), 0 0 15px rgba(0, 0, 0, 0.9); }
+            100% { opacity: 0.9; text-shadow: 0 0 5px var(--color-primary), 0 0 5px rgba(0, 0, 0, 0.9); }
+        }
+
+        .header-glow { 
+            text-shadow: 
+                0 0 10px var(--color-primary), 
+                0 0 5px rgba(0, 0, 0, 0.9), 
+                0 0 10px rgba(0, 0, 0, 0.9);
+            animation: pulse-glow 3s infinite alternate; 
+        }
+
+        /* --- Scanline Effect Keyframes --- */
+        @keyframes scanlines {
+            to { background-position: 0 400px; } 
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5; 
+            pointer-events: none; 
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.05) 50%, 
+                rgba(0, 0, 0, 0.05) 50% 
+            );
+            background-size: 100% 4px; 
+            animation: scanlines 10s linear infinite; 
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            background-color: rgba(18, 18, 18, 0.85);
+            position: sticky;
+            top: 0;
+            z-index: 11; 
+        }
+
+        .navbar .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--color-primary);
+            text-decoration: none;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+        }
+        .nav-links a {
+            color: var(--color-dim);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+            background-color: rgba(0, 255, 255, 0.05);
+        }
+        
+        /* Main Content Container */
+        .main-content {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: rgba(26, 26, 26, 0.9); 
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.15);
+            position: relative; 
+            z-index: 10; 
+        }
+
+        /* --- Certificate Card Styling --- */
+        .cert-card {
+            background-color: #1f1f1f;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            /* This left border will be overridden inline for specific colors */
+            border-left: 5px solid var(--color-primary); 
+            border-radius: 8px;
+            padding: 1.5rem; 
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .cert-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            transform: scale(1.01);
+            background-color: #242424;
+        }
+        .cert-icon {
+            font-size: 2rem;
+            line-height: 1;
+            color: var(--color-primary);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        /* --- MOUSE SPOTLIGHT EFFECT --- */
+        #spotlight {
+            position: fixed;
+            width: 600px; 
+            height: 600px;
+            border-radius: 50%;
+            pointer-events: none; 
+            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.08) 0%, transparent 70%); 
+            z-index: 4; 
+            transform: translate(-50%, -50%); 
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 1.5rem; }
+            .main-content { margin: 1.5rem; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- 0. Background Video Container -->
+    <div id="video-background">
+        <video autoplay muted loop playsinline>
+            <!-- !!! IMPORTANT: Replace src="" with a direct link to an MP4 or WEBM file. -->
+            <source src="" type="video/mp4"> 
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <!-- 1. Dark Overlay (Ensures text contrast is high) -->
+    <div id="video-overlay"></div>
+
+    <!-- 2. Spotlight follows mouse -->
+    <div id="spotlight"></div>
+
+    <!-- Navigation Bar --><nav class="navbar">
+        <a href="index.html" class="logo">🛡️ oxsh0gunX</a>
+        
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="project.html">Projects</a>
+            <!-- Highlighted Link -->
+            <!-- <a href="certificates.html" style="color: var(--color-primary); border-color: var(--color-primary); box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);">Certificates</a> -->
+            <a href="social.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        
+        <!-- The main title element needs an ID to be targeted by JavaScript -->
+        <h1 id="cert-title" class="text-4xl font-bold mb-12 text-center text-neon header-glow">
+            CERTIFICATION MATRIX
+        </h1>
+        
+        <!-- CERTIFICATIONS SECTION -->
+        <section>
+            <!-- 2-Column Grid for Certificates (Good for displaying key info) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> 
+                
+                <!-- Existing Certificate 1: OSCP -->
+                <div class="cert-card" style="border-left-color: var(--color-primary);">
+                    <div class="flex items-start mb-3">
+                        <!-- UPDATED LOCAL FILE: Using hackersdaddy.png for OSCP/Hacking-related placeholder -->
+                        <img src="hackersdaddy.png" 
+                             onerror="this.style.display='none'" 
+                             alt="OSCP Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border border-neon shadow-neon-sm p-1" 
+                             style="border-color: var(--color-primary);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold text-neon">OSCP - OffSec Certified Professional</h3>
+                            <p class="text-sm text-dim">Issued by Offensive Security</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                        Demonstrated practical, hands-on knowledge of penetration testing methodology and report writing. **Status: Target/In Progress.**
+                    </p>
+                    <a href="#" class="text-xs inline-block text-neon font-bold mt-3 hover:underline self-start">VERIFY CREDENTIAL</a>
+                </div>
+
+               
+
+                <!-- NEW CERTIFICATE 5: TryHackMe -->
+                <div class="cert-card" style="border-left-color: var(--color-thm);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using tryhackme.png -->
+                        <img src="tryhackme.png" 
+                             onerror="this.style.display='none'" 
+                             alt="TryHackMe Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-thm);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-thm);">Advent of Cyber 2024</h3>
+                            <p class="text-sm text-dim">Issued by TryHackMe</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                        <!-- Hands-on skill validation across various security domains (Web, Network, Forensics) through guided learning paths and CTF rooms. **Status: Actively Engaging.** -->
+                    </p>
+                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-EWJNOSXPJM.pdf   " class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-thm);">VIEW PROFILE</a>
+                </div>
+
+
+
+                <!-- NEW CERTIFICATE 5: TryHackMe -->
+                <div class="cert-card" style="border-left-color: var(--color-thm);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using tryhackme.png -->
+                        <img src="tryhackme.png" 
+                             onerror="this.style.display='none'" 
+                             alt="TryHackMe Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-thm);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-thm);">Jr Penetration Tester</h3>
+                            <p class="text-sm text-dim">Issued by TryHackMe</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+entesting methodologies and tactics,
+Enumeration, exploitation and reporting,
+Realistic hands-on hacking exercises and 
+Learn security tools used in the industry                    </p>
+                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-Q9W1BUQB7M.pdf      " class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-thm);">VIEW PROFILE</a>
+                </div>
+
+
+
+<!-- NEW CERTIFICATE 5: TryHackMe -->
+                <div class="cert-card" style="border-left-color: var(--color-thm);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using tryhackme.png -->
+                        <img src="tryhackme.png" 
+                             onerror="this.style.display='none'" 
+                             alt="TryHackMe Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-thm);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-thm);">Cyber Security 101</h3>
+                            <p class="text-sm text-dim">Issued by TryHackMe</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+    Explore computer networking and cryptography,
+    Learn the basics of Linux, Windows, and AD,
+    Explore the world of offensive cyber security and 
+    Discover the techniques of defensive security                    </p>
+                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-2LWYMYM2QZ.pdf  " class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-thm);">VIEW PROFILE</a>
+                </div>
+
+
+
+
+                <!-- NEW CERTIFICATE 5: TryHackMe -->
+               <div class="cert-card" style="border-left-color: var(--color-thm);">
+                    <div class="flex items-start mb-3">
+                         <img src="tryhackme.png" 
+                             onerror="this.style.display='none'" 
+                             alt="TryHackMe Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-thm);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-thm);">Advent of Cyber 2022</h3>
+                            <p class="text-sm text-dim">Issued by TryHackMe</p>
+                        </div>
+                    </div>
+                    
+                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-L9LRHLOQXI.pdf" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-thm);">VIEW PROFILE</a>
+                </div>
+
+
+
+                <!-- NEW CERTIFICATE 5: TryHackMe -->
+                <div class="cert-card" style="border-left-color: var(--color-thm);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using tryhackme.png -->
+                        <img src="tryhackme.png" 
+                             onerror="this.style.display='none'" 
+                             alt="TryHackMe Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-thm);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-thm);">Web Fundamentals</h3>
+                            <p class="text-sm text-dim">Issued by TryHackMe</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                            Understand web fundamentals
+    Major vulnerabilities explained,
+    Learn industry-used tools and 
+    Web application assessments
+                    
+                    </p>
+                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-09L2TVBZLA.pdf   " class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-thm);">VIEW PROFILE</a>
+                </div>
+
+
+
+
+                <!-- NEW CERTIFICATE 5: TryHackMe -->
+                <div class="cert-card" style="border-left-color: var(--color-thm);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using tryhackme.png -->
+                        <img src="tryhackme.png" 
+                             onerror="this.style.display='none'" 
+                             alt="TryHackMe Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-thm);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-thm);">pathway-introtocyber</h3>
+                            <p class="text-sm text-dim">Issued by TryHackMe</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-5TFZ3BEDL2.pdf   " class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-thm);">VIEW PROFILE</a>
+                </div>
+
+
+
+
+                <!-- NEW CERTIFICATE 5: TryHackMe -->
+                <div class="cert-card" style="border-left-color: var(--color-thm);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using tryhackme.png -->
+                        <img src="tryhackme.png" 
+                             onerror="this.style.display='none'" 
+                             alt="TryHackMe Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-thm);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-thm);">Pre Security</h3>
+                            <p class="text-sm text-dim">Issued by TryHackMe</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+    Cyber security basics,
+    Networking basics and weaknesses,
+    The web and common attacks and 
+    Learn to use the Linux operating system                    </p>
+                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-VV7H89AWDF.pdf   " class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-thm);">VIEW PROFILE</a>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ####################################################################### -->
+   <!-- NEW CERTIFICATE 6: Let's Defend -->
+         <div class="cert-card" style="border-left-color: #3b82f6;">
+                    <div class="flex items-start mb-3">
+                         <img src="Offenso-Logo-White.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: #3b82f6;">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: #3b82f6;">Indroduction To Ethical Hacking</h3>
+                            <p class="text-sm text-dim">Issued by Offenso Hackers Academy</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://drive.google.com/file/d/1J8ZuhQ2PMGEFMVParrBIPLzcifMJeU16/view?usp=sharing" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: #3b82f6;">VIEW CERTIFICATE</a>
+                </div>
+<!-- ####################################################################### -->
+
+<div class="cert-card" style="border-left-color: #8B5CF6;">
+                    <div class="flex items-start mb-3">
+                         <img src="Fetlla.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: #8B5CF6;">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: #8B5CF6;">Cyber Security 10 Day Workshop</h3>
+                            <p class="text-sm text-dim">Issued by FETLLA</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://drive.google.com/file/d/1ujVy9zKE7r1Sk7srhWndiinZtMGzCeUz/view?usp=sharing" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: #8B5CF6;">VIEW CERTIFICATE</a>
+                </div>
+  <!-- ####################################################################### -->
+
+
+
+
+
+                <!-- NEW CERTIFICATE 6: Let's Defend -->
+                <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">MITRE ATT&CK Framework</h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io/my-rewards/detail/4120a497-3edc-40de-a8bd-1ac7a0d2dd39" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+
+<!-- NEW CERTIFICATE 6: Let's Defend -->
+                <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">Phishing Expert</h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io/my-rewards/detail/04ee815fc2b7411d9eff465c5d7dc162" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+                <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">Web Attack Investigator</h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io/my-rewards/detail/57522ff5-cae2-4c32-9fbc-c74ef6ec5d4d" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+                  <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">SIEM Basics, Installation and Configuration</h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io/my-rewards/detail/38eb02bf-f536-47d0-8b61-0ea6d2aaf2d5" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+
+  <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">IT Security Expert </h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io//my-rewards/detail/69fa4d7f-7ccf-441c-8542-10af7e9bfd73" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+
+
+
+                  <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">Lab Builder</h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io//my-rewards/detail/fe039fee-50bb-434b-8b08-0115967ec3f8" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+
+  <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">Network Cable</h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io//my-rewards/detail/6fe79d01-e421-4e9a-8a80-a12c6b408295" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+
+
+
+
+
+
+
+                  <div class="cert-card" style="border-left-color: var(--color-ld);">
+                    <div class="flex items-start mb-3">
+                         <!-- UPDATED LOCAL FILE: Using letsdefend.png -->
+                        <img src="letsdefend.png" 
+                             onerror="this.style.display='none'" 
+                             alt="Let's Defend Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border shadow-neon-sm p-1" 
+                             style="border-color: var(--color-ld);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold" style="color: var(--color-ld);">SOC Member</h3>
+                            <p class="text-sm text-dim">Issued by Let's Defend</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                    </p>
+                    <a href="https://app.letsdefend.io//my-rewards/detail/33f86728cd994226b5b54173246efe74" class="text-xs inline-block font-bold mt-3 hover:underline self-start" style="color: var(--color-ld);">VIEW CERTIFICATE</a>
+                </div>
+
+
+
+
+
+                <!-- Existing Certificate 3: AWS Cloud Practitioner -->
+                <div class="cert-card" style="border-left-color: var(--color-primary);">
+                    <div class="flex items-start mb-3">
+                         <!-- LOCAL FILE: aws_logo.png (No replacement provided in repository files) -->
+                        <img src="aws_logo.png" 
+                             onerror="this.style.display='none'" 
+                             alt="AWS Logo" 
+                             class="w-16 h-16 mr-4 flex-shrink-0 rounded-md border border-neon shadow-neon-sm p-1" 
+                             style="border-color: var(--color-primary);">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold text-neon">AWS Certified Cloud Practitioner</h3>
+                            <p class="text-sm text-dim">Issued by Amazon Web Services</p>
+                        </div>
+                    </div>
+                    <p class="text-sm">
+                        Foundational understanding of the AWS Cloud platform, services, security, and economics. **Status: Achieved.**
+                    </p>
+                    <a href="#" class="text-xs inline-block text-neon font-bold mt-3 hover:underline self-start">VERIFY CREDENTIAL</a>
+                </div>
+
+                
+
+    <!-- JavaScript for Spotlight and Title Animation --><script>
+        
+        // --- Core Logic for the Sweeping Color Wave on the Title ---
+        function animateTitleColor() {
+            const titleElement = document.getElementById('cert-title');
+            const text = titleElement.textContent;
+            
+            // Step 1: Wrap every character in a span for individual control
+            if (!titleElement.querySelector('.rainbow-char')) {
+                let wrappedHtml = '';
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
+                    wrappedHtml += `<span class="rainbow-char" style="display: inline-block;">${char === ' ' ? '&nbsp;' : char}</span>`;
+                }
+                titleElement.innerHTML = wrappedHtml;
+            }
+            
+            // Define the sequence of neon colors for the transition
+            const neonPalette = [
+                '#00FFFF', // Cyan (Default)
+                '#00FF41', // Neon Green
+                '#FF00FF', // Magenta
+                '#FFD700'  // Gold/Yellow
+            ];
+            
+            let frameCounter = 0;
+            const chars = titleElement.querySelectorAll('.rainbow-char');
+            
+            // Step 2: The animation loop using requestAnimationFrame for smoothness
+            function updateTitleColors() {
+                // Control the speed of the sweep (0.08 for a very slow, smooth speed)
+                frameCounter += 0.08; 
+                
+                chars.forEach((char, index) => {
+                    // Step 3: Calculate the color index for each letter
+                    const offsetIndex = Math.floor(frameCounter + index / 2) % neonPalette.length;
+                    const color = neonPalette[offsetIndex];
+                    
+                    char.style.color = color; 
+                    char.style.textShadow = `0 0 10px ${color}80, 0 0 5px #FFFFFF30`; 
+                });
+
+                requestAnimationFrame(updateTitleColors);
+            }
+            
+            // Start the infinite animation loop
+            updateTitleColors();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Spotlight Mouse-Follower Logic ---
+            const spotlight = document.getElementById('spotlight');
+
+            document.addEventListener('mousemove', (e) => {
+                spotlight.style.left = `${e.clientX}px`;
+                spotlight.style.top = `${e.clientY}px`;
+            });
+            
+            // Start the sweeping color animation
+            animateTitleColor();
+        });
+    </script>
+</body>
+</html>
