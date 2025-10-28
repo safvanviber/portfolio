@@ -29,7 +29,7 @@
             overflow-x: hidden;
             position: relative;
         }
-        /*  */
+        /* */
         /* Utility Classes for Glow */
         .text-neon { color: var(--color-primary); }
         .shadow-neon-sm { box-shadow: 0 0 5px rgba(0, 255, 255, 0.4); }
@@ -133,6 +133,31 @@
             font-size: 1.8em;
         }
 
+        /* --- NEW: Typing Effect Styling --- */
+        .hacker-text-container {
+            font-size: 1.25em; /* A good size for this page */
+            min-height: 1.5em; /* Prevents layout shift */
+            color: var(--color-dim); /* Use the dim color */
+            text-align: center;
+            margin-bottom: 2.5rem; /* Added more space */
+            margin-top: 1rem;
+        }
+
+        /* Blinking Cursor Animation */
+        .cursor {
+            display: inline-block;
+            color: var(--color-primary);
+            margin-left: 2px;
+            animation: blink 0.7s infinite step-end;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        /* --- End of Typing Effect Styling --- */
+
+
         /* --- MOUSE SPOTLIGHT EFFECT --- */
         #spotlight {
             position: fixed;
@@ -171,12 +196,17 @@
 
     <div class="main-content">
         
-        <h1 class="text-4xl font-bold mb-8 text-center text-neon header-glow">
+        <h1 class="text-4xl font-bold mb-4 text-center text-neon header-glow">
             WHO AM I
         </h1>
         
+        <!-- NEW: Typing Effect Container -->
+        <p class="hacker-text-container">
+            <span id="typing-text"></span><span class="cursor">_</span>
+        </p>
+
         <!-- IDENTITY & PHILOSOPHY -->
-   <!-- <section class="mb-8">
+        <!-- <section class="mb-8">
     <h2 class="section-header text-neon">0x01 IDENTITY & CORE FOCUS</h2>
     <p class="text-lg leading-relaxed mb-4 text-gray-200">
         My formal identity is <b>Muhammed Safvan</b>, but in the digital realm, I operate as <span class="text-neon font-bold italic">oxsh0gunX</span>—a moniker reflecting my drive for enduring power and mastery in Cyber Security. This pseudonym, inspired by the discipline of Raiden Shogun, defines my commitment to relentless skill acquisition.
@@ -306,6 +336,55 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- NEW: Typing Effect Logic ---
+            const phrases = [
+                "// STATUS: [CLASSIFIED]",
+                "// IDENTITY: 0xSh0gunX",
+                "// FOCUS: Blue Team | SOC Analysis",
+                "// AFFILIATION: Top 1% @ TryHackMe",
+                "// SYSTEM: Arch Linux // Hyprland",
+                "// MISSION: Defend. Detect. Respond."
+            ];
+            
+            const typingElement = document.getElementById('typing-text');
+            let phraseIndex = 0;
+            let charIndex = 0;
+            
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function type() {
+                if (charIndex < phrases[phraseIndex].length) {
+                    typingElement.textContent += phrases[phraseIndex].charAt(charIndex);
+                    charIndex++;
+                    await sleep(70); 
+                    type();
+                } else {
+                    await sleep(2000); 
+                    erase();
+                }
+            }
+
+            async function erase() {
+                if (charIndex > 0) {
+                    typingElement.textContent = phrases[phraseIndex].substring(0, charIndex - 1);
+                    charIndex--;
+                    await sleep(40); 
+                    erase();
+                } else {
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    await sleep(500); 
+                    type();
+                }
+            }
+
+            // Start the typing animation
+            type();
+            // --- End of Typing Effect Logic ---
+
+
             // --- Spotlight Mouse-Follower Logic ---
             const spotlight = document.getElementById('spotlight');
 
@@ -318,3 +397,4 @@
     </script>
 </body>
 </html>
+
